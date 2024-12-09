@@ -1,0 +1,57 @@
+Hello world!
+from scipy.optimize import linprog
+
+def main():
+    print("=== Resolutor de Programación Lineal ===")
+    print("Formato de entrada: Maximización y minimización (convertimos internamente a minimización).")
+    
+    # Entrada de la función objetivo
+    print("\n1. Ingresar la función objetivo:")
+    print("Ejemplo: Para maximizar z = 3x + 2y, ingresa los coeficientes separados por espacios: 3 2")
+    c = list(map(float, input("Coeficientes de la función objetivo: ").split()))
+    
+    # Convertir a problema de minimización (SciPy trabaja minimizando)
+    c = [-ci for ci in c]
+    
+    # Entrada de restricciones
+    print("\n2. Ingresar las restricciones:")
+    print("Ejemplo: Para 2x + y <= 8 y x + 2y <= 6, ingresa los coeficientes en cada fila y luego el lado derecho.")
+    print("Nota: Las restricciones deben ser del tipo '<=' (menor o igual).")
+    
+    num_restricciones = int(input("Número de restricciones: "))
+    A = []
+    b = []
+    
+    for i in range(num_restricciones):
+        print(f"\nRestricción {i + 1}:")
+        coeficientes = list(map(float, input("Coeficientes (ejemplo: 2 1): ").split()))
+        A.append(coeficientes)
+        lado_derecho = float(input("Lado derecho (ejemplo: 8): "))
+        b.append(lado_derecho)
+    
+    # Límites de las variables
+    print("\n3. Ingresar límites de las variables:")
+    print("Ejemplo: Para x >= 0, y >= 0, los límites son (0, None) para cada variable.")
+    limites = []
+    for i in range(len(c)):
+        print(f"Límites para la variable {i + 1} (en formato: inferior superior, ejemplo: 0 None):")
+        limite = input("Límite: ").split()
+        limites.append((float(limite[0]), None if limite[1] == "None" else float(limite[1])))
+    
+    # Resolver el problema
+    print("\nResolviendo el problema...")
+    resultado = linprog(c, A_ub=A, b_ub=b, bounds=limites, method="highs")
+    
+    # Mostrar resultados
+    if resultado.success:
+        print("\n=== Solución encontrada ===")
+        print(f"Valor óptimo de la función objetivo: {-resultado.fun}")
+        print("Valores de las variables:")
+        for i, valor in enumerate(resultado.x):
+            print(f"x{i + 1} = {valor}")
+    else:
+        print("\n=== No se encontró una solución ===")
+        print(f"Motivo: {resultado.message}")
+
+if __name__ == "__main__":
+    main()
