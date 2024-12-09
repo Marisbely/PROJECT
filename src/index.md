@@ -55,7 +55,7 @@ class LinearProgrammingSolver:
             print(f"Valor óptimo de la función objetivo: {optimal_value}")
         else:
             print(f"Error al resolver el problema. Estado: {status}")
-# Ejemplo de uso
+# Ejemplo de uso cambio de la nueva rama
 if __name__ == "__main__":
     # Coeficientes de la función objetivo (Maximizar Z = 2000x1 + 3000x2)
     objective_coeffs = [-2000, -3000]  # Usamos valores negativos porque linprog minimiza por defecto.
